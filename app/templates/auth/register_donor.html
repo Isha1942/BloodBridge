@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-gradient-to-br from-blue-50 to-white py-12">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-4">
+        <i class="fas fa-heart text-blue-600 text-3xl"></i>
+      </div>
+      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        Register as a <span class="text-blue-600">Donor</span>
+      </h2>
+      <p class="mt-3 max-w-2xl mx-auto text-lg text-gray-500 sm:mt-4">
+        Join our community of blood donors and help save lives.
+      </p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+        <h2 class="text-xl font-bold text-white">Donor Information</h2>
+        <p class="text-blue-100 text-sm">Please fill out all required fields</p>
+      </div>
+
+      <form action="{{ url_for('auth.register', user_type='donor') }}" method="POST" class="p-6 space-y-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">
+              <i class="fas fa-envelope text-blue-500 mr-1"></i>Email
+            </label>
+            <input type="email" name="email" id="email" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-semibold text-gray-700 mb-1">
+              <i class="fas fa-lock text-blue-500 mr-1"></i>Password
+            </label>
+            <input type="password" name="password" id="password" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="confirm_password" class="block text-sm font-semibold text-gray-700 mb-1">
+              <i class="fas fa-lock text-blue-500 mr-1"></i>Confirm Password
+            </label>
+            <input type="password" name="confirm_password" id="confirm_password" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="first_name" class="block text-sm font-semibold text-gray-700 mb-1">
+              <i class="fas fa-user text-blue-500 mr-1"></i>First Name
+            </label>
+            <input type="text" name="first_name" id="first_name" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          <div>
+            <label for="last_name" class="block text-sm font-semibold text-gray-700 mb-1">
+              <i class="fas fa-user text-blue-500 mr-1"></i>Last Name
+            </label>
+            <input type="text" name="last_name" id="last_name" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="blood_type" class="block text-sm font-semibold text-gray-700 mb-1">
+              <i class="fas fa-tint text-blue-500 mr-1"></i>Blood Type
+            </label>
+            <select id="blood_type" name="blood_type" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="">Select blood type</option>
+              {% for blood_type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+              <option value="{{ blood_type }}">{{ blood_type }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+        </div>
+
+        <button type="submit"
+          class="w-full flex justify-center items-center py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 font-semibold text-lg">
+          <i class="fas fa-heart mr-2"></i>Register as Donor
+        </button>
+      </form>
+    </div>
+
+    <p class="text-center text-gray-500 text-sm mt-6">
+      Already have an account?
+      <a href="{{ url_for('auth.login') }}" class="text-blue-600 hover:text-blue-700 font-medium">Sign In</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}

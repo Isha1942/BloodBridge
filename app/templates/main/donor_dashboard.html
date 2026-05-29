@@ -1,0 +1,119 @@
+{% extends "base.html" %} {% block title %}Donor Dashboard - LifeLink{% endblock %} {% block content %}
+<div class="bg-gradient-to-br from-blue-50 to-white min-h-screen py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">
+            Welcome back, <span class="text-blue-600">{{ current_user.first_name }}</span>
+          </h1>
+          <p class="text-gray-500 mt-1">Track your donations and blood drive registrations</p>
+        </div>
+        <div class="mt-4 md:mt-0">
+          <a href="{{ url_for('main.donate') }}"
+            class="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg">
+            <i class="fas fa-hand-holding-heart mr-2"></i>Schedule New Donation
+          </a>
+        </div>
+      </div>
+      <div class="mt-4 h-1 w-20 bg-blue-600 rounded-full"></div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+      <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-yellow-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm">Pending</p>
+            <p class="text-2xl font-bold text-gray-800">{{ pending_donations|length }}</p>
+            <p class="text-xs text-gray-400 mt-1">Donations</p>
+          </div>
+          <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+            <i class="fas fa-clock text-yellow-600"></i>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-green-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm">Accepted</p>
+            <p class="text-2xl font-bold text-gray-800">{{ accepted_donations|length }}</p>
+            <p class="text-xs text-gray-400 mt-1">Donations</p>
+          </div>
+          <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+            <i class="fas fa-check-circle text-green-600"></i>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-red-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm">Rejected</p>
+            <p class="text-2xl font-bold text-gray-800">{{ rejected_donations|length }}</p>
+            <p class="text-xs text-gray-400 mt-1">Donations</p>
+          </div>
+          <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+            <i class="fas fa-times-circle text-red-600"></i>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-blue-500">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm">Registered</p>
+            <p class="text-2xl font-bold text-gray-800">{{ registered_drives|length }}</p>
+            <p class="text-xs text-gray-400 mt-1">Blood Drives</p>
+          </div>
+          <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+            <i class="fas fa-calendar-check text-blue-600"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 px-6 py-4">
+          <h2 class="text-lg font-semibold text-white"><i class="fas fa-clock mr-2"></i>Pending Donations</h2>
+        </div>
+        <div class="p-5">
+          {% if pending_donations %}
+          <div class="space-y-3">
+            {% for donation in pending_donations %}
+            <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-semibold text-gray-800">{{ donation.blood_type }} Blood</p>
+                  <p class="text-sm text-gray-500">{{ donation.units }} unit(s) • {{ donation.donation_date.strftime('%B %d, %Y') }}</p>
+                </div>
+                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">Pending</span>
+              </div>
+              {% if donation.admin_notes %}
+              <p class="mt-2 text-sm text-gray-500 bg-gray-50 p-2 rounded"><i class="fas fa-sticky-note mr-1"></i>{{ donation.admin_notes }}</p>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="text-center py-8">
+            <i class="fas fa-inbox text-gray-300 text-5xl mb-3"></i>
+            <p class="text-gray-500">No pending donations</p>
+            <a href="{{ url_for('main.donate') }}" class="mt-3 inline-block text-blue-600 hover:text-blue-700 text-sm">Schedule a donation →</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="bg-gradient-to-r from-green-500 to-green-600 px-6 py-4">
+          <h2 class="text-lg font-semibold text-white"><i class="fas fa-check-circle mr-2"></i>Accepted Donations</h2>
+        </div>
+        <div class="p-5">
+          {% if accepted_donations %}
+          <div class="space-y-3">
+            {% for donation in accepted_donations %}
+            <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-semibold text-gray-800">{{ donation.blood_type }} Blood</p>
+                  <p class="text-sm text-gray-500">{{ donation.units }} unit(s) • {{ donation.donation_date.strftime('%B %d, %Y') }}</p>
+                </div>
